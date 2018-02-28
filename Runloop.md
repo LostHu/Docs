@@ -37,7 +37,7 @@ OSX/iOS的系统架构核心Darwin，包括内核、驱动、Shell等。
 Darwin其中在硬件层面有3个组成部分：Mach、BSD、IOKit，共同组成了XNU内核。
 
 
-####1. AutoreleasePool
+1. AutoreleasePool
 App启动后，系统在主线程RunLoop里注册了2个Observer
 > - 第一个是Entry，即将进入Loop，回调里会调用```_objc_autoreleasePoolPush()```创建自动释放池，其order = -2147483647，优先级最高，保证创建释放池发生在其他所有回调之前。
 > - 第二个监听了2个事件：
@@ -46,15 +46,15 @@ App启动后，系统在主线程RunLoop里注册了2个Observer
 
 在主线程执行的代码，通常写在诸如事件回调、Timer回调内的，会被RunLoop创建好的AutoreleasePool环绕着，所以不会出现内存泄露，开发者也不必显示创建Pool了。
 
-####2. 事件响应
+2. 事件响应
 苹果注册了一个Source1（基于mach port的）用来接收系统事件，回调函数为```__IOHIDEventSystemClineQueueCallback()```。
 当一个硬件事件发生后，首先由IOKit.framework生成一个IOHIDEvent事件，随后用**mach port转发给需要的App进程**。随后苹果注册的Source1就会触发回调，并调用```_UIApplicationHandleEventQueue()```进行应用内部的分发。
 ```_UIApplicationHandleEventQueue()```会把IOHIDEvent处理并包装成UIEvent进行处理或分发。
 
-####3.PerformSelecter
+3.PerformSelecter
 当调用NSObject的```performSelecter:afterDelay:```后，实际上其内部会创建一个Timer并添加到当前线程的RunLoop中。如果当前线程没有RunLoop，则此方法也会失效。
 
-###Runloop实际应用
+Runloop实际应用
 
 **AFNetworking**
 > 单独创建了一个线程，并启动了一个**RunLoop**
