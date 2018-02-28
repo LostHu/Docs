@@ -59,9 +59,9 @@
 > ```
 > - (void)setA:(NSString*)a
 > {
-	[self willChangeValueForKey:@"a"];
-	[super setValue:a forKey:@"a"];
-	[self didChangeValueForKey:@"a"];
+>	[self willChangeValueForKey:@"a"];
+>	[super setValue:a forKey:@"a"];
+>	[self didChangeValueForKey:@"a"];
 > }
 > ```
 
@@ -94,10 +94,10 @@
 14. APP生命周期？
 
 >- **Not running**
-- **Inactive**：运行在前台+没有接收事件。状态切换，会短暂停留。长期停留（锁屏、来电、短信等）
-- **Active**：运行在前台+接收事件
-- **Background**：运行在后台+执行代码
-- **Suspended**：运行在后台+不执行代码
+>- **Inactive**：运行在前台+没有接收事件。状态切换，会短暂停留。长期停留（锁屏、来电、短信等）
+>- **Active**：运行在前台+接收事件
+>- **Background**：运行在后台+执行代码
+>- **Suspended**：运行在后台+不执行代码
 
 15. 链式语法实现原理？
 > 调用函数方法 **[object a];** 
