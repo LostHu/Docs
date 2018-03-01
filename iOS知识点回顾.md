@@ -103,3 +103,20 @@
 > 调用函数方法 **[object a];** 
 > 如果需要**[[object a] b];**继续调用下一个b方法，则需要a方法**返回object对象本身**。
 > 如果需要实现**object.a();**，则需要使用block，一般调用block的语法是此样式。
+
+16. ARC ```dealloc()``` 方法？
+--
+> - 要释放CoreFoundation对象，这个不归ARC管理，需要调用```CFRetain/CFRelease```。
+> - 取消```Notification```订阅。
+
+17. 消息转发全流程？
+--
+> - 总结流程
+>  - - **首先看是否动态添加了实现**  
+>  - - **尝试转发其他某个对象处理**
+>  - - **尝试打包方法签名**
+>  - - **尝试自定义分发（可多对象）处理**
+- 首先会走``` resolveInstanceMethod:(SEL)sel 或 resolveClassMethod:(SEL)sel ```，看实例对象或者类是否在运行时添加了对应的```sel```实现
+- 如果没有，走``` (id)forwardingTargetForSelector:(SEL)sel```，如果返回不为空，则将消息交给返回对象去处理这个```sel```。只能交给单个对象。
+- 如上一部返回nil，交给``` -(NSMethodSignature*)methodSignatureForSelector:(SEL)sel ```处理生成这个```sel```的签名，包含这个sel的所有信息。
+- 如果返回签名成功，则```-(void)forwardInvocation:(NSInvocation*)incovation```，则可以调用```NSInvocation```来做最后的处理。可以转发给多个对象。
